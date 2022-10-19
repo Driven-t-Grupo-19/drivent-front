@@ -4,8 +4,6 @@ on:
       - main
 
 name: Build and Deploy
-env:
-  REACT_APP_API_BASE_URL: /api
 jobs:
   build:
     runs-on: self-hosted
@@ -13,6 +11,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Create back-end env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_REACT_APP_API_BASE_URL: ${{secrets.REACT_APP_API_BASE_URL}}
+          directory: drivent-front/
+          file_name: .env
+          fail_on_empty: true
 
       - name: Build
         run: docker-compose build
