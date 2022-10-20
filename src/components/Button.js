@@ -12,7 +12,7 @@ export const GenericButton = styled.div`
     flex-direction: column;
 
     border-radius: 20px;
-    border: 1px solid #CECECE;
+    border:  ${props => props.clicked ? 'none' : '1px solid #CECECE' };
 
     cursor: pointer;
 
@@ -23,7 +23,13 @@ export const GenericButton = styled.div`
     line-height: 19px;
     /* identical to box height */
 
-    text-align: center;
-
     color: #454545;
+
+    text-align: center;
+    h4 {
+        color: #454545;
+    }
+    h6 {
+        font-size: 14px;
+    }
 `;
