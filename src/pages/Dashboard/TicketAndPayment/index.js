@@ -6,6 +6,7 @@ import { ConfirmButton } from '../../../components/ConfirmButton';
 import Payment from './Payment';
 
 export default function TickertAndPayment() {
+  // verifica se a pessoa ja escolheu algum ticket e salvou no localhost.
   const [modality, setModality] = useState( 
     localStorage.getItem('modality')? JSON.parse(localStorage.getItem('modality')) : 
       {
@@ -13,8 +14,10 @@ export default function TickertAndPayment() {
         accommodation: '',
         value: 0
       });
+  
   const [page, setPage] = useState(localStorage.getItem('modality')? 'payment' : 'ticket');
   
+  //valores dos ingressos presenciais/online/com hotel
   // eslint-disable-next-line no-unused-vars
   const [values, setValues] = useState({
     presential: 250,
@@ -22,6 +25,7 @@ export default function TickertAndPayment() {
     accommodation: 200
   });
 
+  //chama a pagina de pagamento caso a pessoa tenha salvo no localstorage o ticket
   function paymentPage() {
     return (
       <TicketContainer>
@@ -31,6 +35,7 @@ export default function TickertAndPayment() {
     );
   };
 
+  //chama a pagina de ticket caso a pessoa nao tenha salvo no localstorage o ticket
   function ticketPage() {
     return(
       <TicketContainer>
@@ -79,6 +84,7 @@ export default function TickertAndPayment() {
     );
   };
 
+  //salva no localstorage o ticket como key 'modality'
   function saveLocalStorage() {
     localStorage.setItem('modality', JSON.stringify(modality));
     setPage('payment');
