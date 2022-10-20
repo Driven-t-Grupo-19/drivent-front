@@ -35,7 +35,7 @@ export default function Enroll() {
         toast('Inscrito com sucesso! Por favor, faça login.');
         navigate('/sign-in');
       } catch (error) {
-        toast('Não foi possível fazer o cadastro!');
+        toast(`${error.response.data.message}`);
       }
     }
   }
