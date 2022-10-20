@@ -42,8 +42,8 @@ export default function TickertAndPayment() {
         <HeaderPage> Ingresso e pagamento </HeaderPage>
         <p> Primeiro, escolha sua modalidade de ingresso: </p>
         <ModalityContainer>
-          <GenericButton onClick={() => setModality({ ticket: 'Presential', accommodation: '', value: values.presential })}
-            clicked={modality.ticket === 'Presential' ? true : false}>
+          <GenericButton onClick={() => setModality({ ticket: 'Presencial', accommodation: '', value: values.presential })}
+            clicked={modality.ticket === 'Presencial' ? true : false}>
             <h4> Presencial </h4>
             <h6>  R${values.presential} </h6>
           </GenericButton>
@@ -54,7 +54,7 @@ export default function TickertAndPayment() {
           </GenericButton>
         </ModalityContainer>
         {
-          modality.ticket === 'Presential' ?
+          modality.ticket === 'Presencial' ?
             <>
               <p> Otimo, agora escolha sua modalidade de hospedagem: </p>
               <ModalityContainer>
