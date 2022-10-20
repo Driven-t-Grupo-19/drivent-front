@@ -34,7 +34,7 @@ export default function SignIn() {
       toast('Login realizado com sucesso!');
       navigate('/dashboard');
     } catch (err) {
-      toast('Não foi possível fazer o login!');
+      toast(`${err.response.data.message}`);
     }
   } 
 
