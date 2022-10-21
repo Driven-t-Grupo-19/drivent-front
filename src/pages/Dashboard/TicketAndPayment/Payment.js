@@ -1,32 +1,44 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 export default function Payment() {
-  return(
-    <Container>
-      <h1>Ingresso escolhido</h1>
-      <InfoBox>
-        <h2>Presencial + com hotel</h2>
-        <h3>R$ 600</h3>
-      </InfoBox>
-      <h1>Pagamento</h1>
-      <CreditCard></CreditCard>
-    </Container>
+  // verifica se a pessoa ja escolheu algum ticket e salvou no localhost.
+  const [modality, setModality] = useState(
+    localStorage.getItem('modality') ?
+      JSON.parse(localStorage.getItem('modality'))
+      :
+      {}
+  );
+
+  function getModalityText() {
+    let result = `${modality.ticket}`;
+
+    if (modality.accomodation) {
+      result += ' + Com Hotel';
+    } else {
+      result += ' + Sem Hotel';
+    };
+
+    return result;
+  }
+
+  return (
+    <TicketContainer>
+      <p>Ingresso escolhido</p>
+      <TicketResult>
+        <h3>{getModalityText()}</h3>
+        <h4>R$ {modality.value}</h4>
+      </TicketResult>
+    </TicketContainer>
   );
 };
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
+const TicketResult = styled.div`
+  height: 109px;
+  width: 290px;
+  margin-top: 20px;
 
-  h1{
-    color:#8E8E8E;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 23px;
-  }
-`;
-
-const InfoBox = styled.div`
+  background-color: #FFEED2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,4 +66,43 @@ const InfoBox = styled.div`
 `;
 
 const CreditCard = styled.div`
+  border-radius: 20px;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #454545;
+  text-align: center;
+
+  h4 {
+    color: #898989;
+    font-size: 14px;
+  } 
+  h6 {
+    font-size: 14px;
+  }
+  h3 {
+    color: #454545;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+`;
+
+const TicketContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  color: #454545;
+
+  p{
+    color: gray;
+    font-size: 20px;
+    b {
+      font-weight: bold;
+    }
+  }
 `;

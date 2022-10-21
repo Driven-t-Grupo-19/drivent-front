@@ -60,6 +60,7 @@ export default function PersonalInformationForm() {
 
       try {
         await saveEnrollment(newData);
+        localStorage.setItem('isEnrolled', JSON.stringify(true));
         toast('Informações salvas com sucesso!');
       } catch (err) {
         toast('Não foi possível salvar suas informações!');

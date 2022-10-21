@@ -17,6 +17,7 @@ export async function getPersonalInformations(token) {
     },
   });
 
+  localStorage.setItem('isEnrolled', JSON.stringify(true));
   return response.data;
 }
 //
