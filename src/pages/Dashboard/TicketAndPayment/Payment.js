@@ -43,6 +43,29 @@ const TicketResult = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 290px;
+  height: 100px;
+  background-color: #FFEED2;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  border-radius: 20px;
+
+  h2{
+    margin-bottom: 6px;
+    font-size: 16px;
+    color: #454545;
+  }
+
+  h3{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: #898989;
+  }
+`;
+
+const CreditCard = styled.div`
   border-radius: 20px;
 
   font-family: 'Roboto';
