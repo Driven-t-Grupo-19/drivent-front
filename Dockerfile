@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:16.15
 WORKDIR /usr/src/drivent
 COPY ./package*.json ./
 COPY ./.husky ./
