@@ -3,8 +3,10 @@ import styled from 'styled-components';
 export const ConfirmButton = styled.button`
     color: ${props => props.color || 'black'};
     height: ${props => props.height || '37px'};
-    width: ${props => props.width || '162px'};
-    font-size: 12px;
+    min-height: 37px;
+    min-width: 180px;
+    width: ${props => props.width || '180px'};
+    font-size: 14px;
     line-height: 16px;
     text-align: center;
     border: none;
