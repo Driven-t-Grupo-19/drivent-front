@@ -4,6 +4,7 @@ import CardForm from './formCard';
 
 export default function Payment() {
   // verifica se a pessoa ja escolheu algum ticket e salvou no localhost.
+  // eslint-disable-next-line no-unused-vars
   const [modality, setModality] = useState(
     localStorage.getItem('modality') ?
       JSON.parse(localStorage.getItem('modality'))
