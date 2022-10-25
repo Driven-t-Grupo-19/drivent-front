@@ -5,7 +5,8 @@ on:
 
 name: Build and Deploy
 env:
-  REACT_APP_API_BASE_URL: http://ec2-3-84-26-91.compute-1.amazonaws.com/api
+  GENERATE_SOURCEMAP: false
+  REACT_APP_API_BASE_URL: /api
 jobs:
   build:
     runs-on: drivent-front
@@ -14,5 +15,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Build
+        run: docker-compose build
+
       - name: Run
-        run: docker-compose down && docker-compose up --build -d
+        run: docker-compose down && docker-compose up -d
