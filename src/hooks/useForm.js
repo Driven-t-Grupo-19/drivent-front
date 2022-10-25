@@ -55,7 +55,7 @@ export const useForm = (options) => {
     }
 
     setErrors({});
-
+    localStorage.setItem('form', JSON.stringify(data));
     if (options?.onSubmit) {
       options.onSubmit(data);
     }
