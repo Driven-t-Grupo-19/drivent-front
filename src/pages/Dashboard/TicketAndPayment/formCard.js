@@ -11,6 +11,9 @@ import { ptBR } from 'date-fns/locale';
 import DateFnsUtils from '@date-io/date-fns';
 import { toast } from 'react-toastify';
 import Payment from 'payment';
+import { createEnroll } from '../../../services/postEnrollApi';
+import { postOrUpdatePurchase } from '../../../services/purchaseApi';
+import Vector from '../../../assets/images/Vector.png';
 
 export default function CardForm() {
   const [number, setNumber] = useState('');
@@ -19,8 +22,10 @@ export default function CardForm() {
   const [cvc, setCVC] = useState('');
   const [focus, setFocus] = useState('');
   const expiryDateFormatted = dayjs(expiry).format('MM/YY').toString();
+  const token = JSON.parse(localStorage.getItem('userData'));
+  const [payment, setPayment] = useState(localStorage.getItem('payment')? localStorage.getItem('payment') : '');
 
-  function finalizedOrder(e) {
+  async function finalizedOrder(e) {
     e.preventDefault();
     const paymentExpiryDate = expiryDateFormatted.split('/');
 
@@ -36,6 +41,26 @@ export default function CardForm() {
       toast('CVC de cartão inválido.');
       return;
     }
+    await createEnroll(token.token);
+    const postPayment = await postOrUpdatePurchase(token.token);
+    setPayment(postPayment);
+    if(postPayment === 'OK') {
+      localStorage.setItem('payment', 'true');
+    };
+  }
+
+  if(payment !== '') {
+    return (
+      <Container>
+        <div>
+          <img src={Vector} alt="Confirm" />
+        </div>
+        <div>
+          <h4> <b> Pagamento confirmado!  </b> </h4>
+          <h6> Prossiga para escolha de hospedagem e atividades </h6>
+        </div>
+      </Container>
+    );
   }
 
   return(
@@ -117,6 +142,9 @@ const Container = styled.div`
     flex-wrap: wrap;
     gap: 20px;
     align-items: center;
+    b {
+      font-weight: bold;
+    }
 `;
 
 const FormContainer = styled.form`
