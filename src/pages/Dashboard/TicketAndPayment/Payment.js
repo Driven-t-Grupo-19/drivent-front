@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { GenericButton } from '../../../components/Button';
 import CardForm from './formCard';
-import { useNavigate } from 'react-router-dom';
 
 export default function Payment() {
   // verifica se a pessoa ja escolheu algum ticket e salvou no localhost.
@@ -13,7 +12,6 @@ export default function Payment() {
       :
       {}
   );
-  const [reload, setReload] = useState(false);
 
   function getModalityText() {
     let result = `${modality.ticket}`;
