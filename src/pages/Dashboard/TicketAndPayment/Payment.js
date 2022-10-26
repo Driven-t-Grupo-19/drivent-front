@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { GenericButton } from '../../../components/Button';
 import CardForm from './formCard';
 
 export default function Payment() {
@@ -24,13 +25,26 @@ export default function Payment() {
     return result;
   }
 
+  function cancelReservoir() {
+    localStorage.removeItem('modality');
+    window.location.reload(false);
+  }
+
   return (
     <TicketContainer>
       <p>Ingresso escolhido</p>
-      <TicketResult>
-        <h3>{getModalityText()}</h3>
-        <h4>R$ {modality.value}</h4>
-      </TicketResult>
+
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <TicketResult style={{ marginRight: '20px' }}>
+          <h3>{getModalityText()}</h3>
+          <h4>R$ {modality.value}</h4>
+        </TicketResult>
+
+        <GenericButton height={'80px'} onClick={() => cancelReservoir()}>
+          Cancelar reserva
+        </GenericButton>
+      </div>
+
       <p> Pagamento </p>
       <CardForm />
     </TicketContainer>
