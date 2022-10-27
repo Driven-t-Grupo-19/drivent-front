@@ -7,15 +7,15 @@ import AuthLayout from '../../layouts/Auth';
 import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
 import Link from '../../components/Link';
-import { Row, Title, Label } from '../../components/Auth';
-
+import { Row, Title, Label, LoginWithGit } from '../../components/Auth';
 import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
-
 import useSignIn from '../../hooks/api/useSignIn';
 import qs from 'query-string';
 import { useEffect } from 'react';
 import axios from 'axios';
+import GithubButton from '../../components/GithubButton';
+import styled from 'styled-components';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -65,22 +65,6 @@ export default function SignIn() {
     }
   } 
 
-  function redirectToGithub() {
-    const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
-    const params = {
-      response_type: 'code',
-      scope: 'user public_repo',
-      client_id: 'c0bca30b016ca235240d',
-      redirect_uri: 'http://localhost:3000/sign-in/',
-      state: 'zzfgh'
-    };
-  
-    const queryStrings = qs.stringify(params);
-    const authorizationUrl = `${GITHUB_AUTH_URL}?${queryStrings}`;
-    //console.log(authorizationUrl);
-    window.location.href = authorizationUrl;
-  }
-
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
       <Row>
@@ -94,8 +78,8 @@ export default function SignIn() {
           <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
           <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
         </form>
-        <h1>Ou logue com o Github</h1>
-        <button color="red" onClick={redirectToGithub}>Github</button>
+        <LoginWithGit>Ou entre com o Github</LoginWithGit>
+        <GithubButton height='4vh' width='100%'></GithubButton>
       </Row>
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
@@ -103,3 +87,4 @@ export default function SignIn() {
     </AuthLayout>
   );
 }
+
