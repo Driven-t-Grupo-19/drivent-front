@@ -11,7 +11,7 @@ import Enroll from './pages/Enroll';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import FillSubscription from './pages/Dashboard/FillSubscription';
-import TickertAndPayment from './pages/Dashboard/TicketAndPayment';
+import TicketAndPayment from './pages/Dashboard/TicketAndPayment';
 import Hotel from './pages/Dashboard/Hotel';
 import Activities from './pages/Dashboard/Activities';
 import Certificate from './pages/Dashboard/Certificate';
@@ -42,7 +42,7 @@ export default function App() {
                 }
               >
                 <Route path="subscription" element={<FillSubscription />} />
-                <Route path="payment" element={<TickertAndPayment />} />
+                <Route path="payment" element={<TicketAndPayment />} />
                 <Route path="hotel" element={<Hotel />} />
                 <Route path="activities" element={<Activities />} />
                 <Route path="certificate" element={<Certificate />} />
