@@ -134,19 +134,19 @@ export default function Hotel() {
     );
   };
 
-  function getHotelCard(hotel) {
+  function getHotelCard(hotel) {    
     return (
       <HotelCard width={'200px'} height={'270px'}
-        onClick={() => selectHotel(hotel.id, hotel.Accommodations)}
+        onClick={() => selectHotel(token, hotel.id)}
         clicked={selectedHotel === hotel.id}>
         <img src={hotel.hotelPicture} alt="" style={{ height: '109px', width: '170px', borderRadius: '5px' }} />
 
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-          <h4>{hotel.name}</h4>
-          <h6>Tipos de acomodação:</h6>
-          <h5>{getAccommodationsType(hotel.Accommodations)}</h5>
-          <h6>Vagas disponíveis:</h6>
-          <h5>{getAvailableAccommodations(hotel.Accommodations)}</h5>
+          <h2>{hotel.name}</h2>
+          <h4>Tipos de acomodação:</h4>
+          <h3>{getAccommodationsType(hotel.Accommodations)}</h3>
+          <h4>Vagas disponíveis:</h4>
+          <h3>{getAvailableAccommodations(hotel.Accommodations)}</h3>
         </div>
       </HotelCard>
     );
@@ -160,7 +160,7 @@ export default function Hotel() {
     if (testIfIncludesType(accommodations, 'SINGLE')) responseString += 'Single';
     if (testIfIncludesType(accommodations, 'DOUBLE')) responseString += 'Double';
     if (testIfIncludesType(accommodations, 'TRIPLE')) responseString += 'Triple';
-
+    
     return getFinalAccommodationMessage(responseString);
   }
 
@@ -256,6 +256,7 @@ export default function Hotel() {
         </RoomContainer>
         <button onClick={async () => {
             await bookRoom(token, roomId);
+            setControlRender(controlRender+1);
           }}>RESERVAR QUARTO
         </button>
         </>
@@ -335,16 +336,16 @@ export const HotelCard = styled.div`
 
     color: #454545;
 
-    h4 {
+    h2 {
       color: #343434;
       font-size: 20px;
       margin: 10px 0;
     }
-    h5 {
+    h3 {
       font-size: 13px;
       margin-bottom: 5px;
     }
-    h6 {
+    h4 {
       font-size: 14px;
       font-weight: bold;
     }
