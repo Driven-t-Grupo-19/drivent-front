@@ -1,17 +1,23 @@
+
 /* eslint-disable */
 import styled from 'styled-components';
 import { FaUser, FaRegUser } from 'react-icons/fa';
 import { getHotelRooms, bookRoom, checkUserPurchase } from '../../../services/roomApi';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import useHotel from '../../../hooks/api/useHotel';
 
 export default function Hotel() {
   const [displayRooms, setDisplayRooms] = useState(false);
   const [hotelRooms, setHotelRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState({});
   const [purchaseInfo, setPurchaseInfo] = useState([]);
-  const [roomId, setRoomId] = useState();
+  const [selectedHotel, setSelectedHotel] = useState();
   const [controlRender, setControlRender] = useState(0);
+  const [roomId, setRoomId] = useState();
+
+  const { hotels } = useHotel();
+
   const modality = JSON.parse(localStorage.getItem('modality'));
   const payment = localStorage.getItem('payment');
   const { token } = JSON.parse(localStorage.getItem('userData'));
@@ -19,7 +25,6 @@ export default function Hotel() {
   useEffect(async ()=>{
     const data = await checkUserPurchase(token);
     setPurchaseInfo(data);
-    console.log(purchaseInfo);
   },[controlRender])
 
   if(!modality || !payment) { 
@@ -28,7 +33,7 @@ export default function Hotel() {
     ); 
   }
 
-  if(!modality.accommodation) {
+  if (!modality.accommodation) {
     return (
       <MessageContainer> <p>Sua modalidade de ingresso não inclui hospedagem </p>
         <p>Prossiga para a escolha de atividades</p></MessageContainer>
@@ -129,6 +134,85 @@ export default function Hotel() {
     );
   };
 
+  function getHotelCard(hotel) {
+    return (
+      <HotelCard width={'200px'} height={'270px'}
+        onClick={() => selectHotel(hotel.id, hotel.Accommodations)}
+        clicked={selectedHotel === hotel.id}>
+        <img src={hotel.hotelPicture} alt="" style={{ height: '109px', width: '170px', borderRadius: '5px' }} />
+
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <h4>{hotel.name}</h4>
+          <h6>Tipos de acomodação:</h6>
+          <h5>{getAccommodationsType(hotel.Accommodations)}</h5>
+          <h6>Vagas disponíveis:</h6>
+          <h5>{getAvailableAccommodations(hotel.Accommodations)}</h5>
+        </div>
+      </HotelCard>
+    );
+  }
+
+  function getAccommodationsType(accommodations) {
+    if (accommodations.length === 0) return 'Sem vagas';
+
+    let responseString = '';
+
+    if (testIfIncludesType(accommodations, 'SINGLE')) responseString += 'Single';
+    if (testIfIncludesType(accommodations, 'DOUBLE')) responseString += 'Double';
+    if (testIfIncludesType(accommodations, 'TRIPLE')) responseString += 'Triple';
+
+    return getFinalAccommodationMessage(responseString);
+  }
+
+  function getFinalAccommodationMessage(responseString) {
+    if (testOneSingleType(responseString)) return responseString;
+
+    return testTwoTypes(responseString) ? testTwoTypes(responseString) : 'Single, Double e Triple';
+  }
+
+  function testOneSingleType(responseString) {
+    return responseString === 'Single' || responseString === 'Double' || responseString === 'Triple';
+  }
+
+  function testTwoTypes(responseString) {
+    if (responseString === 'DoubleTriple') return 'Double e Single';
+    if (responseString === 'SingleTriple') return 'Single e Triple';
+    if (responseString === 'SingleDouble') return 'Single e Double';
+
+    return null;
+  }
+
+  function testIfIncludesType(accommodations, type) {
+    for (let accommodation of accommodations) {
+      if (accommodation.type === type) return true;
+    }
+
+    return false;
+  }
+
+  function getAvailableAccommodations(accommodations) {
+    if (accommodations.length === 0) return 'Sem vagas';
+    let saida = 0;
+
+    for (let accommodation of accommodations) {
+      saida += accommodation.slots;
+    }
+
+    return saida;
+  }
+
+  async function selectHotel(token, id) {
+    setDisplayRooms(true);
+    setSelectedHotel(id);
+    const rooms = await getHotelRooms(token, id);
+    setHotelRooms(rooms);
+    const hashtable = {}
+    for(let i = 0; i < rooms.length; i++){
+      hashtable[rooms[i].id] = false
+    };
+    setSelectedRoom({...hashtable})
+  };
+
   return (
     <Container displayRooms={displayRooms} controlRender={controlRender} >
       <h1>Escolha de hotel e quarto</h1>
@@ -157,11 +241,13 @@ export default function Hotel() {
         </>   
         :
         <>
-        <div className='hoteis'>
-          <div onClick={() => selectHotel(token, 1)}>1</div>
-          <div onClick={() => selectHotel(token, 2)}>2</div>
-          <div onClick={() => selectHotel(token, 3)}>3</div>
-        </div>
+        <HotelContainer>
+        <p>Primeiro, escolha seu hotel</p>
+
+        <HotelsRow>
+          {hotels === null ? '' : hotels.map(hotel => { return getHotelCard(hotel); })}
+        </HotelsRow>
+        </HotelContainer>
         <h5>Ótima pedida! agora escolha seu quarto:</h5>
         <RoomContainer displayRooms={displayRooms}>
           {
@@ -222,6 +308,46 @@ const Container = styled.div`
     display: flex;
     justify-content: space-around;
   }
+`
+
+export const HotelCard = styled.div`
+    height: ${props => props.height || '145px'};
+    width: ${props => props.width || '145px'};
+    margin-right: ${props => props.marginright || '20px'};
+
+    background-color: ${props => props.clicked ? '#FFFED2' : '#F1F1F1'};
+    display: flex;
+    flex-direction: column;
+
+    padding: 14px 16px;
+    box-sizing: border-box;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    color: #454545;
+
+    h4 {
+      color: #343434;
+      font-size: 20px;
+      margin: 10px 0;
+    }
+    h5 {
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+    h6 {
+      font-size: 14px;
+      font-weight: bold;
+    }
 `;
 
 const MessageContainer = styled.div`
@@ -336,3 +462,32 @@ const MyRoom = styled.div`
     text-align: start;
   }
 `
+
+const HotelsRow = styled.div`
+  display: flex;
+  overflow-y: scroll;
+`;
+
+const HotelContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  margin-bottom: 50px;
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  color: #454545;
+  p{
+    color: gray;
+    font-size: 20px;
+    margin-bottom: 18px;
+    b {
+      font-weight: bold;
+    }
+  }
+`;
+
+export const HeaderPage = styled.h1`
+    font-size: 34px;
+    margin-bottom: 30px;
+`;
+

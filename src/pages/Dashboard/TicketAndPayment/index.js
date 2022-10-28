@@ -5,7 +5,7 @@ import { HeaderPage } from '../../../components/Header';
 import { ConfirmButton } from '../../../components/ConfirmButton';
 import Payment from './Payment';
 
-export default function TickertAndPayment() {
+export default function TicketAndPayment() {
   // verifica se a pessoa ja escolheu algum ticket e salvou no localhost.
   const [modality, setModality] = useState(
     localStorage.getItem('modality') ? JSON.parse(localStorage.getItem('modality')) :
