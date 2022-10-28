@@ -27,3 +27,8 @@ export const Row = styled.div`
   justify-content: flex-start;
   width: 100%;
 `;
+
+export const LoginWithGit =  styled.p`
+  margin-top: 10px;
+  margin-bottom: 5px;
+`;

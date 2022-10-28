@@ -6,12 +6,13 @@ import AuthLayout from '../../layouts/Auth';
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
-import { Row, Title, Label } from '../../components/Auth';
+import { Row, Title, Label, LoginWithGit } from '../../components/Auth';
 import Link from '../../components/Link';
 
 import EventInfoContext from '../../contexts/EventInfoContext';
 
 import useSignUp from '../../hooks/api/useSignUp';
+import GithubButton from '../../components/GithubButton';
 
 export default function Enroll() {
   const [email, setEmail] = useState('');
@@ -55,6 +56,8 @@ export default function Enroll() {
           <Button type="submit" color="primary" fullWidth disabled={loadingSignUp}>Inscrever</Button>
         </form>
       </Row>
+      <LoginWithGit>Ou se inscreva com o Github</LoginWithGit>
+      <GithubButton height='4vh' width='100%'></GithubButton>
       <Row>
         <Link to="/sign-in">Já está inscrito? Faça login</Link>
       </Row>
