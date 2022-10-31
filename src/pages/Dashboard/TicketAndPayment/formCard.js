@@ -10,7 +10,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { ptBR } from 'date-fns/locale';
 import DateFnsUtils from '@date-io/date-fns';
 import { toast } from 'react-toastify';
-import Payment from './Payment';
+import Payment from 'payment';
 import { createEnroll } from '../../../services/postEnrollApi';
 import { postOrUpdatePurchase } from '../../../services/purchaseApi';
 import Vector from '../../../assets/images/Vector.png';

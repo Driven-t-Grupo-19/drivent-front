@@ -28,7 +28,7 @@ export async function bookRoom(token, id){
     return response.data;
   }
   catch(err) {
-    toast.error(err.message);
+    toast.error('Conflito');
     // eslint-disable-next-line no-console
     console.log(err);
   }

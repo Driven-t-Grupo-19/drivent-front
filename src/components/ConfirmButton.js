@@ -16,6 +16,5 @@ export const ConfirmButton = styled.button`
     border-radius: 4px;
 
     cursor: pointer;
-
     margin: 15px 0 15px 0;
 `;

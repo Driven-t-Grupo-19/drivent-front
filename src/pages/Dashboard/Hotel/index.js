@@ -6,14 +6,22 @@ import { getHotelRooms, bookRoom, checkUserPurchase } from '../../../services/ro
 import { useState } from 'react';
 import { useEffect } from 'react';
 import useHotel from '../../../hooks/api/useHotel';
+import { ConfirmButton } from '../../../components/ConfirmButton';
+
 
 export default function Hotel() {
   const [displayRooms, setDisplayRooms] = useState(false);
   const [hotelRooms, setHotelRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState({});
-  const [purchaseInfo, setPurchaseInfo] = useState([]);
+  const [purchaseInfo, setPurchaseInfo] = useState({});
   const [selectedHotel, setSelectedHotel] = useState();
   const [controlRender, setControlRender] = useState(0);
+  const [localstorageInfo, setLocalstorageInfo] = useState(
+    localStorage.getItem('hotel') ? JSON.parse(localStorage.getItem('hotel')) :
+  {
+    hotelId: '',
+    room: '',
+  });
   const [roomId, setRoomId] = useState();
 
   const { hotels } = useHotel();
@@ -22,10 +30,14 @@ export default function Hotel() {
   const payment = localStorage.getItem('payment');
   const { token } = JSON.parse(localStorage.getItem('userData'));
 
-  useEffect(async ()=>{
-    const data = await checkUserPurchase(token);
-    setPurchaseInfo(data);
-  },[controlRender])
+  useEffect(async ()=> {
+    localStorage.setItem('hotel', JSON.stringify(localstorageInfo))
+  }, [localstorageInfo])
+
+  useEffect(async () => {
+    
+  },[controlRender, purchaseInfo])
+
 
   if(!modality || !payment) { 
     return (
@@ -39,6 +51,13 @@ export default function Hotel() {
         <p>Prossiga para a escolha de atividades</p></MessageContainer>
     );
   }
+
+  async function setData(){
+    const data = await checkUserPurchase(token);
+    setPurchaseInfo(data);
+  }
+  console.log(controlRender)
+  
 
   function renderIcons(room) {
     let icons = [];
@@ -121,6 +140,7 @@ export default function Hotel() {
             setSelectedRoom(hashtable);
             setRoomId(room.id);
             setControlRender(controlRender+1);
+            setLocalstorageInfo({ ...localstorageInfo, room: room.id });
           }} 
           key={index} 
           selectedRoom={selectedRoom[room.id]} 
@@ -134,11 +154,11 @@ export default function Hotel() {
     );
   };
 
-  function getHotelCard(hotel) {    
+  function getHotelCard(hotel) {   
     return (
-      <HotelCard width={'200px'} height={'270px'}
-        onClick={() => selectHotel(token, hotel.id)}
-        clicked={selectedHotel === hotel.id}>
+      <HotelCard width={'200px'} height={'270px'} key={hotel.id}
+        onClick={() => {selectHotel(token, hotel.id); setLocalstorageInfo({ ...localstorageInfo, hotelId: hotel.id })}}
+        clicked={selectedHotel === hotel.id || localstorageInfo.hotelId === hotel.id}>
         <img src={hotel.hotelPicture} alt="" style={{ height: '109px', width: '170px', borderRadius: '5px' }} />
 
         <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -217,28 +237,30 @@ export default function Hotel() {
     <Container displayRooms={displayRooms} controlRender={controlRender} >
       <h1>Escolha de hotel e quarto</h1>
       {
-        purchaseInfo.length > 0 ?
-        <>
+        purchaseInfo.id?
+  
+        <SelectedPage>
          <h6>Você já escolheu seu quarto:</h6>
          <MyRoom>
-            <img src={purchaseInfo[0].Hotel.hotelPicture} alt="" srcset="" />
-            <h1>{purchaseInfo[0].Hotel.name}</h1>
+            <img src={purchaseInfo.Hotel.hotelPicture} alt="" srcset="" />
+            <h1>{purchaseInfo.Hotel.name}</h1>
             <h2>Quarto reservado</h2>
-            <h3>{purchaseInfo[0].number + ' (' + purchaseInfo[0].type + ')'}</h3>
+            <h3>{purchaseInfo.number + ' (' + purchaseInfo.type + ')'}</h3>
             <h2>Pessoas no seu quarto</h2>
             <h3>
               Você
               {
-                purchaseInfo[0].slots === 0 && purchaseInfo[0].type === 'TRIPLE' ? ' e mais 2' 
-                : purchaseInfo[0].slots === 1 && purchaseInfo[0].type === 'TRIPLE' ? ' e mais 1'
-                : purchaseInfo[0].slots === 2 && purchaseInfo[0].type === 'TRIPLE' ? ' somente' 
-                : purchaseInfo[0].slots === 1 && purchaseInfo[0].type === 'DOUBLE' ? ' somente'
-                : purchaseInfo[0].slots === 0 && purchaseInfo[0].type === 'DOUBLE' ? ' e mais 1'
-                : purchaseInfo[0].slots === 0 && purchaseInfo[0].type === 'SINGLE' ? ' somente' : ''
+                purchaseInfo.slots === 0 && purchaseInfo.type === 'TRIPLE' ? ' e mais 2' 
+                : purchaseInfo.slots === 1 && purchaseInfo.type === 'TRIPLE' ? ' e mais 1'
+                : purchaseInfo.slots === 2 && purchaseInfo.type === 'TRIPLE' ? ' somente' 
+                : purchaseInfo.slots === 1 && purchaseInfo.type === 'DOUBLE' ? ' somente'
+                : purchaseInfo.slots === 0 && purchaseInfo.type === 'DOUBLE' ? ' e mais 1'
+                : purchaseInfo.slots === 0 && purchaseInfo.type === 'SINGLE' ? ' somente' : ''
               }
             </h3>
          </MyRoom>
-        </>   
+         <ConfirmButton onClick={() => {setPurchaseInfo({}); setControlRender(controlRender-1)}}> TROCAR DE QUARTO </ConfirmButton>
+        </SelectedPage>   
         :
         <>
         <HotelContainer>
@@ -254,11 +276,12 @@ export default function Hotel() {
             hotelRooms.length > 0 ? renderRooms(hotelRooms) : ''
           }
         </RoomContainer>
-        <button onClick={async () => {
+        <ConfirmButton onClick={async () => {
             await bookRoom(token, roomId);
-            setControlRender(controlRender+1);
+            setData();
+            setControlRender(controlRender+1)
           }}>RESERVAR QUARTO
-        </button>
+        </ConfirmButton>
         </>
       }
     </Container>
@@ -492,3 +515,9 @@ export const HeaderPage = styled.h1`
     margin-bottom: 30px;
 `;
 
+const SelectedPage = styled.div`
+  button {
+    display: flex;
+  }
+
+`

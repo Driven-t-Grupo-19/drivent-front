@@ -26,6 +26,7 @@ export default function Payment() {
   }
 
   function cancelReservoir() {
+    localStorage.removeItem('payment');
     localStorage.removeItem('modality');
     window.location.reload(false);
   }
