@@ -4,7 +4,6 @@ import qs from 'query-string';
 
 export default function GithubButton({ height, width }) {
   function redirectToGithub() {
-    console.log('enctrou');
     const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
     const params = {
       response_type: 'code',
@@ -13,18 +12,17 @@ export default function GithubButton({ height, width }) {
       redirect_uri: `${process.env.REACT_APP_REDIRECT_URL}`,
       state: 'zzfgh'
     };
-  
+
     const queryStrings = qs.stringify(params);
     const authorizationUrl = `${GITHUB_AUTH_URL}?${queryStrings}`;
-    //console.log(authorizationUrl);
     window.location.href = authorizationUrl;
   }
-    
-  return(
+
+  return (
     <Button onClick={redirectToGithub} height={height} width={width}>
-      <img src={githubIcon}></img>
+      <img src={githubIcon} alt=""></img>
     </Button>
-  );   
+  );
 }
 
 const Button = styled.button`

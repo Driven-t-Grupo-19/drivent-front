@@ -15,7 +15,6 @@ import qs from 'query-string';
 import { useEffect } from 'react';
 import axios from 'axios';
 import GithubButton from '../../components/GithubButton';
-import styled from 'styled-components';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -27,7 +26,7 @@ export default function SignIn() {
   const { setUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const { code } = qs.parseUrl(window.location.href).query;
 
@@ -41,11 +40,9 @@ export default function SignIn() {
           code
         });
         const userData = response.data;
-        console.log(userData);
         setUserData(userData);
         navigate('/dashboard');
       } catch (err) {
-        console.log('err', err);
         toast(`${err.response.data.message}`);
       }
     }
@@ -56,14 +53,13 @@ export default function SignIn() {
 
     try {
       const userData = await signIn(email, password);
-      console.log(userData);
       setUserData(userData);
       toast('Login realizado com sucesso!');
       navigate('/dashboard');
     } catch (err) {
       toast(`${err.response.data.message}`);
     }
-  } 
+  }
 
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
