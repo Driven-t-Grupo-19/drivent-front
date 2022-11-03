@@ -1,31 +1,33 @@
 /* eslint-disable */
 import styled from 'styled-components';
 import { IoExitOutline, IoCloseCircleOutline } from 'react-icons/io5';
-import { useState } from 'react';
+import { diff } from '../../../../utils/calcHourDiff';
 
-export default function Section({sectionName, selectDay}) {
-    const [activities, setActivities] = useState([]);
-
+export default function Section({sectionName, selectDay, activities}) {
     function renderActivities() {
         return(
             activities.map((activity, index) =>
-            <Activity key={index} activityTime={1} spots={activity.spots}>
+            <Activity 
+                key={index} 
+                activityTime={diff(activity.startsAt, activity.endsAt)} 
+                slots={activity.slots}
+            >
                 <div className="info">
-                    <h3>Minecraft montando o pc ideal</h3>
-                    <h4>09:00 - 10:00</h4>
+                    <h3>{activity.name}</h3>
+                    <h4>{activity.startsAt + ' - ' + activity.endsAt}</h4>
                 </div>
                 <div className="bar"></div>
-                <div className="spots">
+                <div className="slots">
                     {
-                        activity.spots > 0 ?
+                        activity.slots > 0 ?
                         <>
-                            <IoExitOutline color='#078632' />
-                            <h5>{activity.spots + ' vagas'}</h5>
+                            <IoExitOutline color='#078632' size={24} />
+                            <h5>{activity.slots + ' vagas'}</h5>
                         </>
                             
                             :
                         <>
-                            <IoCloseCircleOutline color='#CC6666' />
+                            <IoCloseCircleOutline color='#CC6666' size={24} />
                             <h5>Esgotado</h5>
                         </>
                     }
@@ -41,72 +43,9 @@ export default function Section({sectionName, selectDay}) {
             <Element>
                 <h2>{sectionName}</h2>
                 <div className="content">
-                    <Activity activityTime={1} spots={1}>
-                        <div className="info">
-                            <h3>Minecraft montando o pc ideal</h3>
-                            <h4>09:00 - 10:00</h4>
-                        </div>
-                        <div className="bar"></div>
-                        <div className="spots">
-                            <IoExitOutline color='#078632' />
-                            <h5>27 vagas</h5>
-                        </div>
-                    </Activity>
-                    <Activity activityTime={2} spots={1}>
-                        <div className="info">
-                            <h3>Minecraft montando o pc ideal</h3>
-                            <h4>09:00 - 10:00</h4>
-                        </div>
-                        <div className="bar"></div>
-                        <div className="spots">
-                            <IoExitOutline color='#078632' />
-                            <h5>27 vagas</h5>
-                        </div>
-                    </Activity>
-                    <Activity activityTime={1.5} spots={0}>
-                        <div className="info">
-                            <h3>Minecraft montando o pc ideal</h3>
-                            <h4>09:00 - 10:00</h4>
-                        </div>
-                        <div className="bar"></div>
-                        <div className="spots">
-                            <IoCloseCircleOutline color='#CC6666' />
-                            <h5>Esgotado</h5>
-                        </div>
-                    </Activity>
-                    <Activity activityTime={1.5} spots={0}>
-                        <div className="info">
-                            <h3>Minecraft montando o pc ideal</h3>
-                            <h4>09:00 - 10:00</h4>
-                        </div>
-                        <div className="bar"></div>
-                        <div className="spots">
-                            <IoCloseCircleOutline color='#CC6666' />
-                            <h5>Esgotado</h5>
-                        </div>
-                    </Activity>
-                    <Activity activityTime={1.5} spots={0}>
-                        <div className="info">
-                            <h3>Minecraft montando o pc ideal</h3>
-                            <h4>09:00 - 10:00</h4>
-                        </div>
-                        <div className="bar"></div>
-                        <div className="spots">
-                            <IoCloseCircleOutline color='#CC6666' />
-                            <h5>Esgotado</h5>
-                        </div>
-                    </Activity>
-                    <Activity activityTime={3} spots={0}>
-                        <div className="info">
-                            <h3>Minecraft montando o pc ideal</h3>
-                            <h4>09:00 - 10:00</h4>
-                        </div>
-                        <div className="bar"></div>
-                        <div className="spots">
-                            <IoCloseCircleOutline color='#CC6666' />
-                            <h5>Esgotado</h5>
-                        </div>
-                    </Activity>
+                   {
+                    activities.length > 0 ? renderActivities(activities) : ''
+                   }
                 </div>
             </Element>
         </Container>
@@ -182,7 +121,7 @@ const Activity = styled.div`
         margin-right: 8%;
     }
 
-    .spots{
+    .slots{
         display: flex;
         justify-content: center;
         align-items: center;
@@ -192,9 +131,9 @@ const Activity = styled.div`
             font-family: 'Roboto';
             font-style: normal;
             font-weight: 400;
-            font-size: 9px;
+            font-size: 12px;
             line-height: 11px;
-            color: ${props => props.spots > 0 ? '#078632' : '#CC6666'};
+            color: ${props => props.slots > 0 ? '#078632' : '#CC6666'};
             margin-top: 4px;
         }
     }

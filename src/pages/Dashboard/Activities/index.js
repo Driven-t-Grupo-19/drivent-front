@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Days from './Days';
 import Section from './Sections';
+import { getActivities } from '../../../services/activityApi';
 
 export default function Activities() {
   const [selectDay, setSelectDay] = useState(0);
@@ -11,19 +12,32 @@ export default function Activities() {
   function renderSection(sections) {
     return(
       sections.map((section, index) => 
-      <Sections key={index} sectionName={section.name} selectDay={selectDay} />
+      <Section 
+        key={index} 
+        sectionName={section.auditorium} 
+        selectDay={selectDay}
+        activities={sections} 
+      />
       )
     )
   }
+
+  console.log(sections[0])
   
   return(
     <Container selectDay={selectDay}>
       <h1>Escolha de atividades</h1>
       <h2>Primeiro, filtre pelo dia do evento:</h2>
-      <Days selectDay={selectDay} setSelectDay={setSelectDay} />
+      <Days 
+        getActivities={getActivities} 
+        selectDay={selectDay}
+        setSections={setSections} 
+        setSelectDay={setSelectDay} 
+      />
       <Sections>
-        <Section sectionName={'Auditório principal'} selectDay={selectDay} />
-        <Section sectionName={'Auditório secundário'} selectDay={selectDay} />
+        {
+          sections.length > 0 ? renderSection(sections) : ''
+        }
       </Sections>     
     </Container>
   );
@@ -57,4 +71,12 @@ const Container = styled.div`
 const Sections = styled.div`
   display: flex;
   overflow-x: scroll;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+  overflow-y: scroll; 
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
