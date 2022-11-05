@@ -10,35 +10,35 @@ export default function Activities() {
   const [sections, setSections] = useState([]);
 
   function renderSection(sections) {
-    return(
-      sections.map((section, index) => 
-      <Section 
-        key={index} 
-        sectionName={section.auditorium} 
-        selectDay={selectDay}
-        activities={sections} 
-      />
+    return (
+      sections.map((section, index) =>
+        <Section
+          key={index}
+          sectionName={section.auditorium}
+          selectDay={selectDay}
+          activities={sections}
+        />
       )
     )
   }
 
   console.log(sections[0])
-  
-  return(
+
+  return (
     <Container selectDay={selectDay}>
       <h1>Escolha de atividades</h1>
       <h2>Primeiro, filtre pelo dia do evento:</h2>
-      <Days 
-        getActivities={getActivities} 
+      <Days
+        getActivities={getActivities}
         selectDay={selectDay}
-        setSections={setSections} 
-        setSelectDay={setSelectDay} 
+        setSections={setSections}
+        setSelectDay={setSelectDay}
       />
       <Sections>
         {
           sections.length > 0 ? renderSection(sections) : ''
         }
-      </Sections>     
+      </Sections>
     </Container>
   );
 }
