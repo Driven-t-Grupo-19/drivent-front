@@ -2,55 +2,55 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-export default function Days({selectDay, setSelectDay, getActivities, setSections}) {
+export default function Days({ selectDay, setSelectDay, getActivities, setSections }) {
     const [days, setDays] = useState([]);
 
     const { token } = JSON.parse(localStorage.getItem('userData'));
 
     function renderDays(days) {
-        return(
-            days.map((day, index) => 
-            <Dia
-                key={index}
-                id={day.id} 
-                selectDay={selectDay} 
-                onClick={() => setSelectDay(day.id)} 
-            >
-                <h3>Sexta, 22/10</h3>
-            </Dia>
+        return (
+            days.map((day, index) =>
+                <Dia
+                    key={index}
+                    id={day.id}
+                    selectDay={selectDay}
+                    onClick={() => setSelectDay(day.id)}
+                >
+                    <h3>Sexta, 22/10</h3>
+                </Dia>
             )
         );
     };
 
-    return(
+    return (
         <Container>
-            <Dia 
+            <Dia
                 id={1}
-                selectDay={selectDay} 
+                selectDay={selectDay}
                 onClick={async () => {
                     setSelectDay(1);
                     setSections(await getActivities(token));
-                }} 
+                }}
             >
                 <h3>Sexta, 22/10</h3>
             </Dia>
-            <Dia 
+            <Dia
                 id={2}
-                selectDay={selectDay} 
+                selectDay={selectDay}
                 onClick={async () => {
                     setSelectDay(2);
                     setSections(await getActivities(token));
-                }} 
+                }}
             >
                 <h3>Sábado, 23/10</h3>
             </Dia>
-            <Dia 
+            <Dia
                 id={3}
-                selectDay={selectDay} 
+                selectDay={selectDay}
                 onClick={async () => {
                     setSelectDay(3);
                     setSections(await getActivities(token));
-                }} 
+                }}
             >
                 <h3>Domingo, 24/10</h3>
             </Dia>

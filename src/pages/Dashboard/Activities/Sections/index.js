@@ -3,49 +3,49 @@ import styled from 'styled-components';
 import { IoExitOutline, IoCloseCircleOutline } from 'react-icons/io5';
 import { diff } from '../../../../utils/calcHourDiff';
 
-export default function Section({sectionName, selectDay, activities}) {
+export default function Section({ sectionName, selectDay, activities }) {
     function renderActivities() {
-        return(
+        return (
             activities.map((activity, index) =>
-            <Activity 
-                key={index} 
-                activityTime={diff(activity.startsAt, activity.endsAt)} 
-                slots={activity.slots}
-            >
-                <div className="info">
-                    <h3>{activity.name}</h3>
-                    <h4>{activity.startsAt + ' - ' + activity.endsAt}</h4>
-                </div>
-                <div className="bar"></div>
-                <div className="slots">
-                    {
-                        activity.slots > 0 ?
-                        <>
-                            <IoExitOutline color='#078632' size={24} />
-                            <h5>{activity.slots + ' vagas'}</h5>
-                        </>
-                            
-                            :
-                        <>
-                            <IoCloseCircleOutline color='#CC6666' size={24} />
-                            <h5>Esgotado</h5>
-                        </>
-                    }
-                    
-                </div>
-            </Activity> 
+                <Activity
+                    key={index}
+                    activityTime={diff(activity.startsAt, activity.endsAt)}
+                    slots={activity.slots}
+                >
+                    <div className="info">
+                        <h3>{activity.name}</h3>
+                        <h4>{activity.startsAt + ' - ' + activity.endsAt}</h4>
+                    </div>
+                    <div className="bar"></div>
+                    <div className="slots">
+                        {
+                            activity.slots > 0 ?
+                                <>
+                                    <IoExitOutline color='#078632' size={24} />
+                                    <h5>{activity.slots + ' vagas'}</h5>
+                                </>
+
+                                :
+                                <>
+                                    <IoCloseCircleOutline color='#CC6666' size={24} />
+                                    <h5>Esgotado</h5>
+                                </>
+                        }
+
+                    </div>
+                </Activity>
             )
         )
     }
 
-    return(
+    return (
         <Container selectDay={selectDay}>
             <Element>
                 <h2>{sectionName}</h2>
                 <div className="content">
-                   {
-                    activities.length > 0 ? renderActivities(activities) : ''
-                   }
+                    {
+                        activities.length > 0 ? renderActivities(activities) : ''
+                    }
                 </div>
             </Element>
         </Container>
