@@ -4,7 +4,11 @@ import { toast } from 'react-toastify';
 
 export async function getActivities(token) {
   try {
-    const response = await api.get(`/activities`, token);
+    const response = await api.get(`/activities`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   }
 

@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import Days from './Days';
 import Section from './Sections';
 import { getActivities } from '../../../services/activityApi';
+import useActivity from '../../../hooks/api/useActivity';
 
 export default function Activities() {
   const [selectDay, setSelectDay] = useState(0);
   const [sections, setSections] = useState([]);
+  const { token } = JSON.parse(localStorage.getItem('userData'));
+
+  const { activities } = useActivity();
 
   function renderSection(sections) {
     return (
@@ -22,8 +26,6 @@ export default function Activities() {
     )
   }
 
-  console.log(sections[0])
-
   return (
     <Container selectDay={selectDay}>
       <h1>Escolha de atividades</h1>
@@ -35,9 +37,21 @@ export default function Activities() {
         setSelectDay={setSelectDay}
       />
       <Sections>
-        {
-          sections.length > 0 ? renderSection(sections) : ''
-        }
+      <Section
+          sectionName={'MAIN'}
+          selectDay={selectDay}
+          activities={sections}
+        />
+        <Section
+          sectionName={'SIDE'}
+          selectDay={selectDay}
+          activities={sections}
+        />
+        <Section
+          sectionName={'WORKSHOP'}
+          selectDay={selectDay}
+          activities={sections}
+        />
       </Sections>
     </Container>
   );

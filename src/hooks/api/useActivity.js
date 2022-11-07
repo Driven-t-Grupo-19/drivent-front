@@ -3,7 +3,7 @@ import useAsync from '../useAsync';
 import * as activityApi from '../../services/activityApi';
 import useToken from '../useToken';
 
-export default function useHotel() {
+export default function useActivity() {
   const token = useToken();
 
   const {
