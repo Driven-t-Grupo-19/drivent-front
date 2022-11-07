@@ -9,6 +9,24 @@ export default function Activities() {
   const [selectDay, setSelectDay] = useState(0);
   const [sections, setSections] = useState([]);
 
+  
+  const modality = JSON.parse(localStorage.getItem('modality'));
+  const payment = localStorage.getItem('payment');
+
+  if(!modality || !payment) { 
+    return (
+      <MessageContainer> <p>Você precisa ter confirmado pagamento antes
+      de fazer a escolha de atividades</p></MessageContainer>
+    ); 
+  }
+
+  if (modality.ticket === 'Online') {
+    return (
+      <MessageContainer> <p>Sua modalidade de ingresso não necessita escolher
+      atividade. </p><p> Você terá acesso a todas as atividades. </p></MessageContainer>
+    );
+  }
+
   function renderSection(sections) {
     return(
       sections.map((section, index) => 
@@ -21,8 +39,6 @@ export default function Activities() {
       )
     )
   }
-
-  console.log(sections[0])
   
   return(
     <Container selectDay={selectDay}>
@@ -80,3 +96,15 @@ const Sections = styled.div`
     display: none;
   }
 `
+const MessageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  p {
+    color: gray;
+  }
+`;
