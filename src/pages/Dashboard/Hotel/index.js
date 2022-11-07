@@ -36,7 +36,9 @@ export default function Hotel() {
 
   useEffect(async () => {
     
-  },[controlRender, purchaseInfo])
+  },[controlRender, purchaseInfo]);
+
+  console.log(hotels)
 
 
   if(!modality || !payment) { 
