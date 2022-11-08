@@ -4,9 +4,12 @@ import { IoExitOutline, IoCloseCircleOutline } from 'react-icons/io5';
 import { diff } from '../../../../utils/calcHourDiff';
 
 export default function Section({sectionName, selectDay, activities}) {
+    const userId = JSON.parse(localStorage.getItem('userData')).user.id;
     function renderActivities() {
         return(
-            activities.map((activity, index) =>
+            activities.map((activity, index) => {
+            let userInscrito = activity.users.includes(userId)
+            return (
             <Activity 
                 key={index} 
                 activityTime={diff(activity.startsAt, activity.endsAt)} 
@@ -17,6 +20,9 @@ export default function Section({sectionName, selectDay, activities}) {
                     <h4>{activity.startsAt + ' - ' + activity.endsAt}</h4>
                 </div>
                 <div className="bar"></div>
+                {
+                    userInscrito? '': '' 
+                }
                 <div className="slots">
                     {
                         activity.slots > 0 ?
@@ -34,7 +40,7 @@ export default function Section({sectionName, selectDay, activities}) {
                     
                 </div>
             </Activity> 
-            )
+            )})
         )
     }
 

@@ -55,8 +55,8 @@ export default function Hotel() {
   async function setData(){
     const data = await checkUserPurchase(token);
     setPurchaseInfo(data);
+    localStorage.setItem('hotelRoom', JSON.stringify(data))
   }
-  console.log(controlRender)
   
 
   function renderIcons(room) {
@@ -237,8 +237,8 @@ export default function Hotel() {
     <Container displayRooms={displayRooms} controlRender={controlRender} >
       <h1>Escolha de hotel e quarto</h1>
       {
-        purchaseInfo.id?
-  
+        purchaseInfo.id ?
+        
         <SelectedPage>
          <h6>Você já escolheu seu quarto:</h6>
          <MyRoom>
@@ -259,7 +259,8 @@ export default function Hotel() {
               }
             </h3>
          </MyRoom>
-         <ConfirmButton onClick={() => {setPurchaseInfo({}); setControlRender(controlRender-1)}}> TROCAR DE QUARTO </ConfirmButton>
+         <ConfirmButton onClick={() => {setPurchaseInfo({}); setControlRender(controlRender-1); 
+         localStorage.removeItem('hotelRoom')}}> TROCAR DE QUARTO </ConfirmButton>
         </SelectedPage>   
         :
         <>
@@ -278,6 +279,7 @@ export default function Hotel() {
         </RoomContainer>
         <ConfirmButton onClick={async () => {
             await bookRoom(token, roomId);
+
             setData();
             setControlRender(controlRender+1)
           }}>RESERVAR QUARTO
